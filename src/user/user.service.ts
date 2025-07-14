@@ -16,25 +16,21 @@ export class UserService {
   }
 
   findAll() {
-    const users = this.movieModel.find().lean().exec();
-    return users;
+    return this.movieModel.find().lean().exec();
   }
 
   findOne(id: Types.ObjectId) {
-    const user = this.movieModel.findById(id).lean().exec();
-    return user;
+    return this.movieModel.findById(id).lean().exec();
   }
 
   update(id: Types.ObjectId, updateUserDto: UpdateUserDto) {
-    const updatedUser = this.movieModel
+    return this.movieModel
       .findByIdAndUpdate(id, updateUserDto, { new: true })
       .lean()
       .exec();
-    return updatedUser;
   }
 
   remove(id: Types.ObjectId) {
-    const deletedUser = this.movieModel.findByIdAndDelete(id).lean().exec();
-    return deletedUser;
+    return this.movieModel.findByIdAndDelete(id).lean().exec();
   }
 }

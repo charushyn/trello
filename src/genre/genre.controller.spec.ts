@@ -32,38 +32,37 @@ describe('GenreController', () => {
     const dto: CreateGenreDto = {
       name: 'new name genre',
     };
-    const createdUser = await controller.create(dto);
+    const createdGenre = await controller.create(dto);
 
-    expect(createdUser.email).toBe(dto.email);
-    expect(createdUser.nickname).toBe(dto.nickname);
+    expect(createdGenre.name).toBe(dto.name);
 
-    createdGenreId = createdUser._id;
+    createdGenreId = createdGenre._id;
   });
 
-  it('GET Find all users', async () => {
+  it('GET Find all genres', async () => {
     const users = await controller.findAll();
 
     expect(Array.isArray(users)).toBeTruthy();
   });
 
-  it('GET should return created user', async () => {
-    const user = await controller.findOne(createdGenreId);
+  it('GET should return created genre', async () => {
+    const genre = await controller.findOne(createdGenreId);
 
-    expect(user?._id.toString()).toBe(createdGenreId.toString());
+    expect(genre?._id.toString()).toBe(createdGenreId.toString());
   });
 
-  it('PATCH should update user', async () => {
+  it('PATCH should update genre', async () => {
     const dto: UpdateGenreDto = {
-      email: 'email@gmail.com',
+      name: 'new name',
     };
 
-    const updatedUser = await controller.update(createdGenreId, dto);
+    const updatedGenre = await controller.update(createdGenreId, dto);
 
-    expect(updatedUser?.email).toBe(dto.email);
+    expect(updatedGenre?.name).toBe(dto.name);
   });
 
-  it('DELETE should delete user', async () => {
-    const deletedUser = await controller.remove(createdGenreId);
-    expect(deletedUser?._id.toString()).toBe(createdGenreId.toString());
+  it('DELETE should delete genre', async () => {
+    const deletedGenre = await controller.remove(createdGenreId);
+    expect(deletedGenre?._id.toString()).toBe(createdGenreId.toString());
   });
 });

@@ -12,4 +12,4 @@ export class Director {
   DOB: Date;
 }
 
-export const GenreSchema = SchemaFactory.createForClass(Director);
+export const DirectorSchema = SchemaFactory.createForClass(Director);

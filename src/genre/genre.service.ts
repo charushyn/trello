@@ -1,26 +1,37 @@
 import { Injectable } from '@nestjs/common';
 import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Genre, GenreDocument } from './genre.schema';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class GenreService {
+  constructor(
+    @InjectModel(Genre.name) private genreModel: Model<GenreDocument>,
+  ) {}
+
   create(createGenreDto: CreateGenreDto) {
-    return 'This action adds a new genre';
+    const createdGenre = new this.genreModel(createGenreDto);
+    return createdGenre.save();
   }
 
   findAll() {
-    return `This action returns all genre`;
+    return this.genreModel.find().lean().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} genre`;
+  findOne(id: Types.ObjectId) {
+    return this.genreModel.findById(id).lean().exec();
   }
 
-  update(id: number, updateGenreDto: UpdateGenreDto) {
-    return `This action updates a #${id} genre`;
+  update(id: Types.ObjectId, updateGenreDto: UpdateGenreDto) {
+    return this.genreModel
+      .findByIdAndUpdate(id, updateGenreDto, { new: true })
+      .lean()
+      .exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} genre`;
+  remove(id: Types.ObjectId) {
+    return this.genreModel.findByIdAndDelete(id).lean().exec();
   }
 }
