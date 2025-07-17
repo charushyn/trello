@@ -11,8 +11,9 @@ import { MovieService } from './movie.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Types } from 'mongoose';
 
-@ApiTags('Movie!')
+@ApiTags('Movie')
 @Controller('movie')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
@@ -28,17 +29,20 @@ export class MovieController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.movieService.findOne(+id);
+  findOne(@Param('id') id: Types.ObjectId) {
+    return this.movieService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMovieDto: UpdateMovieDto) {
-    return this.movieService.update(+id, updateMovieDto);
+  update(
+    @Param('id') id: Types.ObjectId,
+    @Body() updateMovieDto: UpdateMovieDto,
+  ) {
+    return this.movieService.update(id, updateMovieDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.movieService.remove(+id);
+  remove(@Param('id') id: Types.ObjectId) {
+    return this.movieService.remove(id);
   }
 }

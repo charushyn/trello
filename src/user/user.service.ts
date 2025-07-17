@@ -4,33 +4,41 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './user.schema';
 import { Model, Types } from 'mongoose';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(User.name) private movieModel: Model<UserDocument>,
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private authService: AuthService,
   ) {}
+
   create(createUserDto: CreateUserDto) {
-    const createdUser = new this.movieModel(createUserDto);
+    const token = this.authService.generateToken(createUserDto.email);
+    const createdUser = new this.userModel(createUserDto);
     return createdUser.save();
   }
 
   findAll() {
-    return this.movieModel.find().lean().exec();
+    return this.userModel.find().lean().exec();
   }
 
   findOne(id: Types.ObjectId) {
-    return this.movieModel.findById(id).lean().exec();
+    return this.userModel.findById(id).lean().exec();
+  }
+
+  findByEmail(email: string) {
+    return this.userModel.findOne({ email: email }).lean().exec();
   }
 
   update(id: Types.ObjectId, updateUserDto: UpdateUserDto) {
-    return this.movieModel
+    return this.userModel
       .findByIdAndUpdate(id, updateUserDto, { new: true })
       .lean()
       .exec();
   }
 
   remove(id: Types.ObjectId) {
-    return this.movieModel.findByIdAndDelete(id).lean().exec();
+    return this.userModel.findByIdAndDelete(id).lean().exec();
   }
 }

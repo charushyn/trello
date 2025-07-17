@@ -1,15 +1,22 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Schema as MongooseSchema, Types } from 'mongoose';
+import { UserRole } from './dto/create-user.dto';
 
 export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
-  @Prop()
+  @Prop({ type: String, required: true, unique: true })
   email: string;
 
-  @Prop()
+  @Prop({ type: String, required: true })
   nickname: string;
+
+  @Prop({ type: String, required: true })
+  role: UserRole;
+
+  @Prop({ type: [MongooseSchema.Types.ObjectId], required: true })
+  playlists: Types.ObjectId[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

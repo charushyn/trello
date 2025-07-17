@@ -3,31 +3,47 @@ import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Movie, MovieDocument } from './movie.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class MovieService {
   constructor(
     @InjectModel(Movie.name) private movieModel: Model<MovieDocument>,
   ) {}
+
   create(createMovieDto: CreateMovieDto) {
     const createdMovie = new this.movieModel(createMovieDto);
     return createdMovie.save();
   }
 
   findAll() {
-    return `This action returns all movie`;
+    return this.movieModel
+      .find()
+      .populate('directors')
+      .populate('genre')
+      .lean()
+      .exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} movie`;
+  findOne(id: Types.ObjectId) {
+    return this.movieModel
+      .findById(id)
+      .populate('directors')
+      .populate('genre')
+      .lean()
+      .exec();
   }
 
-  update(id: number, updateMovieDto: UpdateMovieDto) {
-    return `This action updates a #${updateMovieDto.title}} movie`;
+  update(id: Types.ObjectId, updateMovieDto: UpdateMovieDto) {
+    return this.movieModel
+      .findByIdAndUpdate(id, updateMovieDto, { new: true })
+      .populate('directors')
+      .populate('genre')
+      .lean()
+      .exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} movie`;
+  remove(id: Types.ObjectId) {
+    return this.movieModel.findByIdAndDelete(id, { new: true }).lean().exec();
   }
 }

@@ -17,5 +17,8 @@
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "noFallthroughCasesInSwitch": true
-  }
+  },
+  "include": [
+    "src/common/interfaces/request-with-user.interface.ts"
+  ]
 }

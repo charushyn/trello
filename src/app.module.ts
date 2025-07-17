@@ -7,6 +7,16 @@ import { MovieModule } from './movie/movie.module';
 import { DirectorModule } from './director/director.module';
 import { GenreModule } from './genre/genre.module';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
+import { PassportModule } from '@nestjs/passport';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtGuard } from './common/guards/jwt.guard';
+import { PlaylistModule } from './playlist/playlist.module';
+
+const globalGuard = {
+  provide: APP_GUARD,
+  useClass: JwtGuard,
+};
 
 @Module({
   imports: [
@@ -16,8 +26,11 @@ import { UserModule } from './user/user.module';
     DirectorModule,
     GenreModule,
     UserModule,
+    AuthModule,
+    PassportModule,
+    PlaylistModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, globalGuard],
 })
 export class AppModule {}
