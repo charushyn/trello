@@ -7,15 +7,18 @@ import {
   Param,
   Delete,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, UserRole } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Types } from 'mongoose';
 import { Public } from '../common/decorators/public.decorator';
+import { Roles } from '../common/decorators/roles.decorator';
 import { UniqueEmailPipe } from './pipes/unique-email.pipe';
 import { IsObjectIdPipe } from './pipes/isObjectId.pipe';
 import { Request } from 'express';
+import { RoleGuard } from '../common/guards/role/role.guard';
 
 @Controller('user')
 export class UserController {
@@ -28,14 +31,17 @@ export class UserController {
   }
 
   @Get()
+  // @UseGuards(Roles)
   findAll() {
     return this.userService.findAll();
   }
 
   @Get('/me')
+  @Roles([UserRole.ADMIN])
+  @UseGuards(RoleGuard)
   me(@Req() req: Request) {
     const { user } = req;
-    console.log(req.user);
+    
     return user;
   }
 

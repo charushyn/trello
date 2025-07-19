@@ -4,6 +4,7 @@ import { UpdateMovieDto } from './dto/update-movie.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Movie, MovieDocument } from './movie.schema';
 import { Model, Types } from 'mongoose';
+import { UserDocument } from '../user/user.schema';
 
 @Injectable()
 export class MovieService {
@@ -16,13 +17,13 @@ export class MovieService {
     return createdMovie.save();
   }
 
-  findAll() {
-    return this.movieModel
-      .find()
-      .populate('directors')
-      .populate('genre')
-      .lean()
-      .exec();
+  findAll(user: any) {
+    const movie_query = this.movieModel.find();
+
+    if (!user) {
+      movie_query.select('title');
+    }
+    return movie_query.lean().exec();
   }
 
   findOne(id: Types.ObjectId) {

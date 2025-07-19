@@ -2,7 +2,10 @@ import { Types } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsIn, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 
-export type VisibilityStatus = 'Public' | 'Private';
+export enum VisibilityStatus {
+  Public = 'Public',
+  Private = 'Private',
+}
 
 export class CreatePlaylistDto {
   @ApiProperty({

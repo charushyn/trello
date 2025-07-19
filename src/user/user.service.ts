@@ -16,7 +16,7 @@ export class UserService {
   create(createUserDto: CreateUserDto) {
     const token = this.authService.generateToken(createUserDto.email);
     const createdUser = new this.userModel(createUserDto);
-    return createdUser.save();
+    return { data: createdUser.save(), token };
   }
 
   findAll() {

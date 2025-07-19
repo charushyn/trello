@@ -10,7 +10,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtGuard } from './common/guards/jwt.guard';
+import { JwtGuard } from './common/guards/jwt/jwt.guard';
 import { PlaylistModule } from './playlist/playlist.module';
 
 const globalGuard = {
