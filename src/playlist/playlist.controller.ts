@@ -16,6 +16,7 @@ import { Author } from './decorators/author/author.decorator';
 import { Visibility } from './decorators/visibility/visibility.decorator';
 import { VisibilityGuard } from './guards/visibility/visibility.guard';
 import { JwtCanBeUndefined } from '../common/decorators/allow-jwt-undefined.decorator';
+import { UniqueMoviePipe } from './pipes/unique-movie/unique-movie.pipe';
 
 @Controller('playlist')
 export class PlaylistController {
